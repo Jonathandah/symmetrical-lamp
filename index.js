@@ -1,3 +1,8 @@
+/**
+ *createGrid - returns a grid and a starting postion for the piece 
+ * @param {Array} values - array containing 4 values, the first two determine the size 
+ * of the grid and the last towo determine the piece starting postion
+ */
 const createGrid = (values) => {
   const grid = Array(parseInt(values[0]))
     .fill(null)
@@ -13,7 +18,7 @@ let initialRun = true;
 
 let values = ['4', '4', '2', '2'];
 
-let commands = ['1', '4', '1', '3', '2', '3', '2', '4', '1', "0"];
+let commands = ['1', '4', '1', '3', '2', '3', '2', '4', '1', '0'];
 
 let grid = createGrid(values);
 
@@ -22,11 +27,24 @@ let piece = {
   position: { x: parseInt(values[2]), y: parseInt(values[3]) },
 };
 
+/**
+ *  checkCommand - checks if the next move is possible to do, if so executing move otherwise logging "LOST"
+ * @param {Array} grid - two dimensional array representing the grid
+ * @param {Number} currentPostion - current positon of the piece
+ * @param {Number} newPosition - the positon the piece is moving to
+ * @param {String} axis - the axis the piece is moving in
+ */
 const checkCommand = (grid, currentPostion, newPosition, axis) => {
-  const swapArrayElements = (arr, indexA, indexB) => {
-    let temp = arr[indexA];
-    arr[indexA] = arr[indexB];
-    arr[indexB] = temp;
+  /**
+   * swapArrayElements - used to swap place of two indexes so that the piece can move in different directions
+   * @param {Array} arr - the array the piece is moving in
+   * @param {Number} currentIndex - the current index of the array or piece we want to move
+   * @param {Number} newIndex - the new index the old index is swapping to.
+   */
+  const swapArrayElements = (arr, currentIndex, newIndex) => {
+    let temp = arr[currentIndex];
+    arr[currentIndex] = arr[newIndex];
+    arr[newIndex] = temp;
   };
 
   if (grid[newPosition]) {
@@ -92,8 +110,6 @@ const move = {
   },
 };
 
-
-
 // console.log('\n\ngrid', grid);
 // console.log('\n\npice ', piece);
 
@@ -117,15 +133,6 @@ for (let command of commands) {
   }
 }
 
-
-
-
 // process.stdin.on('data', (data) => {
 
-
-
-
-  
-
-  
 // });
