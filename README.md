@@ -10,6 +10,8 @@ First input decides the size of the board and the start postion for the piece, *
 
 Second input is taking a stream of commands, example: `1,4,1,3,2,3,2,4,1,0`, the peice will end up on postion `0,1`.
 
+**NOTE: If the input format is incorrect or missing values the program will exit the process and nothing will happen.**
+
 #### Available commands:
   0 = quit simulation and print results <br />
   1 = move forward one step <br />
