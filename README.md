@@ -4,7 +4,7 @@ To start the simulation run:
 
 ### `node controller.js`
 
-**Note: the simulation always starts with direction north.**
+**Note: The simulation always starts with direction north.**
 
 First input decides the size of the board and the start postion for the piece, **width, height, x, y**, example: `4,4,2,2`.
 
