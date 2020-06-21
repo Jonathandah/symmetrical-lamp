@@ -20,7 +20,7 @@ let model = {
 
     if (positionX > sizeX || positionY > sizeY || values.length < 4) {
       // if the input is incorrect or missing values the process exits
-      process.exit();
+      return;
     }
 
     let grid = Array(sizeY)
