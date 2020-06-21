@@ -71,12 +71,9 @@ let model = {
   move: {
     forward: () => {
       let currentDirection = model.piece.facing[0];
-      console.log("forward");
       switch (currentDirection) {
         case "n":
           model.checkMove(model.grid, model.piece.position.y, model.piece.position.y - 1, "y");
-          console.log("\n\npice ", model.piece);
-          console.log("grid", model.grid);
           break;
         case "e":
           model.checkMove(
@@ -85,13 +82,9 @@ let model = {
             model.piece.position.x + 1,
             "x"
           );
-          console.log("\n\npice ", model.piece);
-          console.log("grid", model.grid);
           break;
         case "s":
           model.checkMove(model.grid, model.piece.position.y, model.piece.position.y + 1, "y");
-          console.log("\n\npice ", model.piece);
-          console.log("grid", model.grid);
           break;
         case "w":
           model.checkMove(
@@ -100,8 +93,6 @@ let model = {
             model.piece.position.x - 1,
             "x"
           );
-          console.log("\n\npice ", model.piece);
-          console.log("grid", model.grid);
           break;
       }
     },
@@ -111,8 +102,6 @@ let model = {
       switch (currentDirection) {
         case "n":
           model.checkMove(model.grid, model.piece.position.y, model.piece.position.y + 1, "y");
-          console.log("\n\npice ", model.piece);
-          console.log("grid", model.grid);
           break;
         case "e":
           model.checkMove(
@@ -121,14 +110,9 @@ let model = {
             model.piece.position.x - 1,
             "x"
           );
-          console.log("\n\npice ", model.piece);
-          console.log("grid", model.grid);
           break;
         case "s":
           model.checkMove(model.grid, model.piece.position.y, model.piece.position.y - 1, "y");
-          console.log("\n\npice ", model.piece);
-          console.log("grid", model.grid);
-
           break;
         case "w":
           model.checkMove(
@@ -137,8 +121,6 @@ let model = {
             model.piece.position.x + 1,
             "x"
           );
-          console.log("\n\npice ", model.piece);
-          console.log("grid", model.grid);
           break;
       }
     },
