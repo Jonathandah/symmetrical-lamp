@@ -6,7 +6,7 @@ To start the simulation run:
 
 **Note: the simulation always starts with direction north.**
 
-First input decides the size of the board and the start postion for the piece, ** width, height, x y **, example: `4,4,2,2`.
+First input decides the size of the board and the start postion for the piece, **width, height, x y**, example: `4,4,2,2`.
 
 Second input is taking a stream of commands, example: `1,4,1,3,2,3,2,4,1,0`, the peice will end up on postion `0,1`.
 
