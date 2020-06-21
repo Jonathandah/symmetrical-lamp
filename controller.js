@@ -10,6 +10,7 @@ const runSimulation = (data) => {
   let commands = data.toString().trim().match(/\d+/g);
 
   for (let command of commands) {
+      //if command is not found the command will be ignored and the rest will keep on executing
     switch (command) {
       case "0":
         model.checkResult(handleResult);
@@ -35,12 +36,10 @@ const runSimulation = (data) => {
  * @param {object} data - the data sent from the command line.
  */
 const handleIncomingData = (data) => {
-  console.log("incoming data, ", data.toString().trim().match(/\d+/g));
 
   if (!model.grid.length) {
     model.createGrid(data);
   } else {
-    console.log("running simualtion...");
     runSimulation(data);
   }
 };

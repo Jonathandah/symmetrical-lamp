@@ -2,14 +2,14 @@ let model = {
   succesfull: undefined,
 
   piece: {
-    facing: ["n", "e", "s", "w"],
+    facing: ["n", "e", "s", "w"], //first index in array represents the direction the piece is facing
     position: { x: null, y: null },
   },
 
   grid: [],
 
   /**
-  createGrid - returns a grid and a starting postion for the piece
+  createGrid - creates the gird/board and sets the starting postion for the piece
   @param {object} data - user value sent from command line
  */
   createGrid: (data) => {
@@ -19,7 +19,7 @@ let model = {
     let positionX = parseInt(values[2]);
     let positionY = parseInt(values[3]);
 
-    if (positionX > sizeX || positionY > sizeY) {
+    if (positionX > sizeX || positionY > sizeY || values.length < 4) { // if the input is incorrect or missing values the process exits
       process.exit();
     }
 
@@ -32,8 +32,6 @@ let model = {
     model.grid = grid;
 
     model.piece = { ...model.piece, position: { x: positionX, y: positionY } };
-
-    console.log("created grid: ", model.grid);
   },
 
   /**
@@ -44,6 +42,8 @@ let model = {
    * @param {String} axis - the axis the piece is moving in
    */
   checkMove: (grid, currentPostion, newPosition, axis) => {
+
+    if(model.succesfull === false) return;
     /**
      * swapArrayElements - used to swap place of two indexes so that the piece can move in different directions
      * @param {Array} arr - the array the piece is moving in
@@ -56,11 +56,16 @@ let model = {
       arr[newIndex] = temp;
     };
 
-    if (grid[newPosition]) {
+    if (grid[newPosition]) { //if new postion exists, move.
       swapArrayElements(grid, currentPostion, newPosition);
       model.piece = { ...model.piece, position: { ...model.piece.position, [axis]: newPosition } };
     } else {
+      /*
+       Made the decision to keep the whole process/loop going even though the test faild since the documentation said
+       to end and return result only on command "0"
+       */
       model.succesfull = false;
+      model.piece = { ...model.piece, position: {x: -1 , y: -1 }};
     }
   },
   move: {
@@ -109,6 +114,7 @@ let model = {
           break;
         case "s":
           model.checkMove(model.grid, model.piece.position.y, model.piece.position.y - 1, "y");
+
           break;
         case "w":
           model.checkMove(
@@ -121,18 +127,18 @@ let model = {
       }
     },
     rotateClockWise: () => {
-      model.piece.facing.push(model.piece.facing.shift());
-      // piece = { ...piece, facing: [...piece.facing.slice(1), piece.facing[0]] };
+      let {piece} = model;
+      piece = { ...piece, facing: [...piece.facing.slice(1), piece.facing[0]] };
     },
     rotateCounterClockWise: () => {
-      // piece = {
-      //   ...piece,
-      //   facing: [
-      //     piece.facing[piece.facing.length - 1],
-      //     ...piece.facing.slice(0, piece.facing.length - 1),
-      //   ],
-      // };
-      model.piece.facing.unshift(model.piece.facing.pop());
+      let {piece} = model;
+      model.piece = {
+        ...piece,
+        facing: [
+          piece.facing[piece.facing.length - 1],
+          ...piece.facing.slice(0, piece.facing.length - 1),
+        ],
+      };
     },
   },
 
@@ -146,7 +152,7 @@ let model = {
     if (model.succesfull) {
       handler(JSON.stringify([model.piece.position.x, model.piece.position.y]));
     } else if (model.succesfull === false) {
-      handler(JSON.stringify([-1, -1]));
+      handler(JSON.stringify([model.piece.position.x, model.piece.position.y]));
     }
   },
 };
