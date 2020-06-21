@@ -5,7 +5,9 @@ let model = {
      */
     incomingData: (handler) => {
       process.stdin.on('data', (data) => {
-        handler(data);
+        let regexData = data.toString().trim().match(/\d+/g);
+        if(regexData === null) process.exit()
+        handler(regexData);
       });
     },
     /**

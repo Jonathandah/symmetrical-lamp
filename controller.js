@@ -3,11 +3,11 @@ const model = require("./model");
 
 /**
  * runSimulation - runs the set of commands sent from the command line.
- * @param {object} data - the data sent from the command line.
+ * @param {Array} commands - array containing strings representing the commands
  */
-const runSimulation = (data) => {
+const runSimulation = (commands) => {
 
-  let commands = data.toString().trim().match(/\d+/g);
+
 
   for (let command of commands) {
       //if command is not found the command will be ignored and the rest will keep on executing
@@ -33,7 +33,7 @@ const runSimulation = (data) => {
 
 /**
  * handleIncomingData - binds incoming data from view with modal. First run triggers createGrid, second run triggers runSimulation.
- * @param {object} data - the data sent from the command line.
+ * @param {Array} data - array containing strings
  */
 const handleIncomingData = (data) => {
 

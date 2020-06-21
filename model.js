@@ -10,16 +10,16 @@ let model = {
 
   /**
   createGrid - creates the gird/board and sets the starting postion for the piece
-  @param {object} data - user value sent from command line
+  @param {Array} values - array with strings of values [width, height, x, y]
  */
-  createGrid: (data) => {
-    let values = data.toString().trim().match(/\d+/g);
+  createGrid: (values) => {
     let sizeX = parseInt(values[0]);
     let sizeY = parseInt(values[1]);
     let positionX = parseInt(values[2]);
     let positionY = parseInt(values[3]);
 
-    if (positionX > sizeX || positionY > sizeY || values.length < 4) { // if the input is incorrect or missing values the process exits
+    if (positionX > sizeX || positionY > sizeY || values.length < 4) {
+      // if the input is incorrect or missing values the process exits
       process.exit();
     }
 
@@ -39,14 +39,13 @@ let model = {
    * @param {Array} grid - two dimensional array representing the grid
    * @param {Number} currentPostion - current positon of the piece
    * @param {Number} newPosition - the positon the piece is moving to
-   * @param {String} axis - the axis the piece is moving in
+   * @param {String} axis - the axis the piece is moving in.
    */
   checkMove: (grid, currentPostion, newPosition, axis) => {
-
-    if(model.succesfull === false) return;
+    if (model.succesfull === false) return;
     /**
      * swapArrayElements - used to swap place of two indexes so that the piece can move in different directions
-     * @param {Array} arr - the array the piece is moving in
+     * @param {Array} arr - the array itself the piece is moving in, an array represents an axis.
      * @param {Number} currentIndex - the current index of the array or piece we want to move
      * @param {Number} newIndex - the new index the old index is swapping to.
      */
@@ -56,7 +55,8 @@ let model = {
       arr[newIndex] = temp;
     };
 
-    if (grid[newPosition]) { //if new postion exists, move.
+    if (grid[newPosition]) {
+      //if new postion exists, move.
       swapArrayElements(grid, currentPostion, newPosition);
       model.piece = { ...model.piece, position: { ...model.piece.position, [axis]: newPosition } };
     } else {
@@ -65,16 +65,18 @@ let model = {
        to end and return result only on command "0"
        */
       model.succesfull = false;
-      model.piece = { ...model.piece, position: {x: -1 , y: -1 }};
+      model.piece = { ...model.piece, position: { x: -1, y: -1 } };
     }
   },
   move: {
     forward: () => {
       let currentDirection = model.piece.facing[0];
-
+      console.log("forward");
       switch (currentDirection) {
         case "n":
           model.checkMove(model.grid, model.piece.position.y, model.piece.position.y - 1, "y");
+          console.log("\n\npice ", model.piece);
+          console.log("grid", model.grid);
           break;
         case "e":
           model.checkMove(
@@ -83,9 +85,13 @@ let model = {
             model.piece.position.x + 1,
             "x"
           );
+          console.log("\n\npice ", model.piece);
+          console.log("grid", model.grid);
           break;
         case "s":
           model.checkMove(model.grid, model.piece.position.y, model.piece.position.y + 1, "y");
+          console.log("\n\npice ", model.piece);
+          console.log("grid", model.grid);
           break;
         case "w":
           model.checkMove(
@@ -94,6 +100,8 @@ let model = {
             model.piece.position.x - 1,
             "x"
           );
+          console.log("\n\npice ", model.piece);
+          console.log("grid", model.grid);
           break;
       }
     },
@@ -103,6 +111,8 @@ let model = {
       switch (currentDirection) {
         case "n":
           model.checkMove(model.grid, model.piece.position.y, model.piece.position.y + 1, "y");
+          console.log("\n\npice ", model.piece);
+          console.log("grid", model.grid);
           break;
         case "e":
           model.checkMove(
@@ -111,9 +121,13 @@ let model = {
             model.piece.position.x - 1,
             "x"
           );
+          console.log("\n\npice ", model.piece);
+          console.log("grid", model.grid);
           break;
         case "s":
           model.checkMove(model.grid, model.piece.position.y, model.piece.position.y - 1, "y");
+          console.log("\n\npice ", model.piece);
+          console.log("grid", model.grid);
 
           break;
         case "w":
@@ -123,22 +137,16 @@ let model = {
             model.piece.position.x + 1,
             "x"
           );
+          console.log("\n\npice ", model.piece);
+          console.log("grid", model.grid);
           break;
       }
     },
     rotateClockWise: () => {
-      let {piece} = model;
-      piece = { ...piece, facing: [...piece.facing.slice(1), piece.facing[0]] };
+      model.piece.facing.push(model.piece.facing.shift()); //chose mutating method for the sole purpose of readability/simpler to understand.
     },
     rotateCounterClockWise: () => {
-      let {piece} = model;
-      model.piece = {
-        ...piece,
-        facing: [
-          piece.facing[piece.facing.length - 1],
-          ...piece.facing.slice(0, piece.facing.length - 1),
-        ],
-      };
+      model.piece.facing.unshift(model.piece.facing.pop());
     },
   },
 
