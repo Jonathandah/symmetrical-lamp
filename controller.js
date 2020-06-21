@@ -1,7 +1,12 @@
 const view = require("./view");
 const model = require("./model");
 
-const createSimulation = (data) => {
+/**
+ * runSimulation - runs the set of commands sent from the command line.
+ * @param {object} data - the data sent from the command line.
+ */
+const runSimulation = (data) => {
+
   let commands = data.toString().trim().match(/\d+/g);
 
   for (let command of commands) {
@@ -25,19 +30,27 @@ const createSimulation = (data) => {
   }
 };
 
+/**
+ * handleIncomingData - binds incoming data from view with modal. First run triggers createGrid, second run triggers runSimulation.
+ * @param {object} data - the data sent from the command line.
+ */
 const handleIncomingData = (data) => {
   console.log("incoming data, ", data.toString().trim().match(/\d+/g));
-  
+
   if (!model.grid.length) {
     model.createGrid(data);
   } else {
     console.log("running simualtion...");
-    createSimulation(data);
+    runSimulation(data);
   }
 };
 
-const handleResult = (data) => {
-  view.showResult(data);
+/**
+ * handleResult - binds data from model to view, sends the result
+ * @param {string} result - the result of the simulation.
+ */
+const handleResult = (result) => {
+  view.showResult(result);
 };
 
-view.bindIncomingData(handleIncomingData);
+view.incomingData(handleIncomingData);

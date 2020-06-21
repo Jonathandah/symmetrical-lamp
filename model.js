@@ -5,22 +5,44 @@ let model = {
     facing: ["n", "e", "s", "w"],
     position: { x: null, y: null },
   },
+
   grid: [],
 
+  /**
+  createGrid - returns a grid and a starting postion for the piece
+  @param {object} data - user value sent from command line
+ */
   createGrid: (data) => {
     let values = data.toString().trim().match(/\d+/g);
+    let sizeX = parseInt(values[0]);
+    let sizeY = parseInt(values[1]);
+    let positionX = parseInt(values[2]);
+    let positionY = parseInt(values[3]);
 
-    model.grid = Array(parseInt(values[0]))
+    if (positionX > sizeX || positionY > sizeY) {
+      process.exit();
+    }
+
+    let grid = Array(sizeY)
       .fill(null)
-      .map((_) => Array(parseInt(values[1])).fill("space"));
+      .map((_) => Array(sizeX).fill("space"));
 
-    model.grid[parseInt(values[2])][parseInt(values[3])] = "block";
+    grid[positionY][positionX] = "block";
 
-    model.piece = { ...model.piece, position: { x: parseInt(values[3]), y: parseInt(values[2]) } };
+    model.grid = grid;
+
+    model.piece = { ...model.piece, position: { x: positionX, y: positionY } };
 
     console.log("created grid: ", model.grid);
   },
 
+  /**
+   *  checkMove - checks if the next move is possible to do, if so executing move otherwise logging "LOST"
+   * @param {Array} grid - two dimensional array representing the grid
+   * @param {Number} currentPostion - current positon of the piece
+   * @param {Number} newPosition - the positon the piece is moving to
+   * @param {String} axis - the axis the piece is moving in
+   */
   checkMove: (grid, currentPostion, newPosition, axis) => {
     /**
      * swapArrayElements - used to swap place of two indexes so that the piece can move in different directions
@@ -44,12 +66,10 @@ let model = {
   move: {
     forward: () => {
       let currentDirection = model.piece.facing[0];
+
       switch (currentDirection) {
         case "n":
           model.checkMove(model.grid, model.piece.position.y, model.piece.position.y - 1, "y");
-          console.log("\n\npice ", model.piece);
-          console.log("grid", model.grid);
-
           break;
         case "e":
           model.checkMove(
@@ -58,13 +78,9 @@ let model = {
             model.piece.position.x + 1,
             "x"
           );
-          console.log("\n\npice ", model.piece);
-          console.log("grid", model.grid);
           break;
         case "s":
           model.checkMove(model.grid, model.piece.position.y, model.piece.position.y + 1, "y");
-          console.log("\n\npice ", model.piece);
-          console.log("grid", model.grid);
           break;
         case "w":
           model.checkMove(
@@ -73,18 +89,15 @@ let model = {
             model.piece.position.x - 1,
             "x"
           );
-          console.log("\n\npice ", model.piece);
-          console.log("grid", model.grid);
           break;
       }
     },
     backward: () => {
       let currentDirection = model.piece.facing[0];
+
       switch (currentDirection) {
         case "n":
           model.checkMove(model.grid, model.piece.position.y, model.piece.position.y + 1, "y");
-          console.log("\n\npice ", model.piece);
-          console.log("grid", model.grid);
           break;
         case "e":
           model.checkMove(
@@ -93,13 +106,9 @@ let model = {
             model.piece.position.x - 1,
             "x"
           );
-          console.log("\n\npice ", model.piece);
-          console.log("grid", model.grid);
           break;
         case "s":
           model.checkMove(model.grid, model.piece.position.y, model.piece.position.y - 1, "y");
-          console.log("\n\npice ", model.piece);
-          console.log("grid", model.grid);
           break;
         case "w":
           model.checkMove(
@@ -108,8 +117,6 @@ let model = {
             model.piece.position.x + 1,
             "x"
           );
-          console.log("\n\npice ", model.piece);
-          console.log("grid", model.grid);
           break;
       }
     },
@@ -128,8 +135,14 @@ let model = {
       model.piece.facing.unshift(model.piece.facing.pop());
     },
   },
+
+  /**
+   * checkResults - sends the result of the simulation to the view
+   * @param {Function} handler - functions from controller that binds the value from the model with view.
+   */
   checkResult: (handler) => {
     if (model.succesfull === undefined) model.succesfull = true;
+
     if (model.succesfull) {
       handler(JSON.stringify([model.piece.position.x, model.piece.position.y]));
     } else if (model.succesfull === false) {
