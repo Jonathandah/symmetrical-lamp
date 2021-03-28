@@ -1,4 +1,4 @@
-let model = {
+const model = {
   succesfull: undefined,
 
   piece: {
