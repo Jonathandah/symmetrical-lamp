@@ -1,4 +1,4 @@
-let model = {
+let view = {
     /**
      * incomingData - runs eventlistener on input data
      * @param {Function} handler - function in controller which binds the input data with the model
@@ -20,4 +20,4 @@ let model = {
     },
   };
 
-  module.exports = model;
+  module.exports = view;
