@@ -1,4 +1,4 @@
-let view = {
+const view = {
     /**
      * incomingData - runs eventlistener on input data
      * @param {Function} handler - function in controller which binds the input data with the model
